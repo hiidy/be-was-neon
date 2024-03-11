@@ -7,6 +7,13 @@
 
 ## 고민한점
 
+- RequestLine이 디렉토리인 경우 index.html를 읽어와야 하고 아닌경우 파일을 읽어야 하는데 이를 어떻게 구현할지 고민했다. RequestLine에서 파일이나
+  디렉토리의 경로를 파싱할 수 있기 때문에 이를 File 객체로 만든 뒤 `isDirectory()`를 사용해서 간단하게 해결했다.
+- 학습 요구사항을 보면 NIO를 사용하지 말라고해서 FileInputStream의 readAllBytes()를 사용했는데 이것이 의도한 방향인지 잘 모르겠다. 다른 방법으로
+  파일을 byte단위로 읽을 수 있는지 더 고민해 봐야겠다.
+- Thread를 Concurrent 패키지를 이용해서 재구현하라고 했는데 단순히 ExecutorService를 이용해서 구현했다. 지금은 20개의 thread를 최대치로
+  스레드풀을 구성하기만 했는데 동시성 문제를 해결하기 위해서 더 사용할 기능이 있는지 확인해봐야 한다고 느낀다.
+
 ## 학습내용
 
 ### 1. HTTP Request를 InputStreamReader만으로 받지 않고 BufferedReader가 필요한 이유
