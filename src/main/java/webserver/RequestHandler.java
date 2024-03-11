@@ -64,13 +64,20 @@ public class RequestHandler implements Runnable {
     }
 
     private String readRequest(BufferedReader httpRequest) throws IOException {
+        StringBuilder requestBuilder = new StringBuilder();
         String line;
-        StringBuilder sb = new StringBuilder();
-        while ((line = httpRequest.readLine()) != null && !line.isEmpty()) {
-            sb.append(line);
-            sb.append('\n');
+
+        if ((line = httpRequest.readLine()) != null && !line.isEmpty()) {
+            requestBuilder.append(line).append('\n');
+            logger.debug("Request Line: {}", line);
         }
-        return sb.toString();
+
+        while ((line = httpRequest.readLine()) != null && !line.isEmpty()) {
+            requestBuilder.append(line).append('\n');
+            logger.debug("Header: {}", line);
+        }
+
+        return requestBuilder.toString();
     }
 
     public String extractPathFromRequestLine(String httpMessage) {
