@@ -30,9 +30,13 @@ public class RequestHandler implements Runnable {
 
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
             BufferedReader inputRequest = new BufferedReader(new InputStreamReader(in));
-            String path = extractPathFromRequestLine(readRequest(inputRequest));
+            String path = extractPathFromRequestLine(readRequestLine(inputRequest));
 
             File file = new File("src/main/resources/static" + path);
+
+            if (file.isDirectory()) {
+                file = new File(file, "index.html");
+            }
 
             DataOutputStream dos = new DataOutputStream(out);
             byte[] body = readByteFromFile(file);
@@ -63,18 +67,13 @@ public class RequestHandler implements Runnable {
         }
     }
 
-    private String readRequest(BufferedReader httpRequest) throws IOException {
+    private String readRequestLine(BufferedReader httpRequest) throws IOException {
         StringBuilder requestBuilder = new StringBuilder();
         String line;
 
         if ((line = httpRequest.readLine()) != null && !line.isEmpty()) {
             requestBuilder.append(line).append('\n');
             logger.debug("Request Line: {}", line);
-        }
-
-        while ((line = httpRequest.readLine()) != null && !line.isEmpty()) {
-            requestBuilder.append(line).append('\n');
-            logger.debug("Header: {}", line);
         }
 
         return requestBuilder.toString();
