@@ -3,6 +3,7 @@ package webserver;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Map;
+import model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,6 +48,16 @@ class HttpRequestTest {
             "GET /create?userId=jayden&nickname=%EC%A0%9C%EC%9D%B4%EB%93%A0&password=1234 HTTP/1.1");
         Map<String, String> queries = httpRequest.getQueries();
         assertThat(queries.get(key)).isEqualTo(value);
+    }
+
+    @Test
+    @DisplayName("HttpRequest객체로부터 파라미터를 불러와서 User 객체가 잘 만들어지는지 테스트")
+    void testCreateUserFromQueryParms() {
+        httpRequest = new HttpRequest(
+            "GET /create?userId=jayden&nickname=%EC%A0%9C%EC%9D%B4%EB%93%A0&password=1234 HTTP/1.1");
+        User user = new User(httpRequest.getValue("userId"),
+            httpRequest.getValue("nickName"), httpRequest.getValue("password"));
+        assertThat(user.getUserId()).isEqualTo("jayden");
     }
 }
 

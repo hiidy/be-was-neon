@@ -62,4 +62,8 @@ public class HttpRequest {
         return Collections.unmodifiableMap(queries);
     }
 
+    public String getValue(String key) {
+        return getQueries().get(key);
+    }
+
 }
