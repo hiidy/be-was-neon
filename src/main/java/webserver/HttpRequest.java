@@ -11,7 +11,7 @@ public class HttpRequest {
     private String method;
     private String requestURI;
 
-    private final Map<String, String> queries = new HashMap<>();
+    private Map<String, String> queries = new HashMap<>();
 
     public HttpRequest(String requestLine) {
         String[] requestLines = requestLine.split(" ");
