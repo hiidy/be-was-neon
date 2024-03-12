@@ -1,15 +1,20 @@
 package webserver;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RequestHandler implements Runnable {
+
     private static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);
 
     private Socket connection;
@@ -19,13 +24,22 @@ public class RequestHandler implements Runnable {
     }
 
     public void run() {
-        logger.debug("New Client Connect! Connected IP : {}, Port : {}", connection.getInetAddress(),
-                connection.getPort());
+        logger.debug("New Client Connect! Connected IP : {}, Port : {}",
+            connection.getInetAddress(),
+            connection.getPort());
 
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
-            // TODO 사용자 요청에 대한 처리는 이 곳에 구현하면 된다.
+            BufferedReader inputRequest = new BufferedReader(new InputStreamReader(in));
+            String path = extractPathFromRequestLine(readRequestLine(inputRequest));
+
+            File file = new File("src/main/resources/static" + path);
+
+            if (file.isDirectory()) {
+                file = new File(file, "index.html");
+            }
+
             DataOutputStream dos = new DataOutputStream(out);
-            byte[] body = "<h1>Hello World</h1>".getBytes();
+            byte[] body = readByteFromFile(file);
             response200Header(dos, body.length);
             responseBody(dos, body);
         } catch (IOException e) {
@@ -52,4 +66,33 @@ public class RequestHandler implements Runnable {
             logger.error(e.getMessage());
         }
     }
+
+    private String readRequestLine(BufferedReader httpRequest) throws IOException {
+        StringBuilder requestBuilder = new StringBuilder();
+        String line;
+
+        if ((line = httpRequest.readLine()) != null && !line.isEmpty()) {
+            requestBuilder.append(line).append('\n');
+            logger.debug("Request Line: {}", line);
+        }
+
+        return requestBuilder.toString();
+    }
+
+    public String extractPathFromRequestLine(String httpMessage) {
+        String[] httpMessages = httpMessage.split("\n");
+        String[] requestLine = httpMessages[0].split(" ");
+        return requestLine[1];
+    }
+
+    public byte[] readByteFromFile(File file) {
+        try (FileInputStream fileInputStream = new FileInputStream(file);) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            byteArrayOutputStream.write(fileInputStream.readAllBytes());
+            return byteArrayOutputStream.toByteArray();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
