@@ -114,7 +114,10 @@ public class RequestHandler implements Runnable {
     public byte[] readByteFromFile(File file) {
         try (FileInputStream fileInputStream = new FileInputStream(file);) {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            byteArrayOutputStream.write(fileInputStream.readAllBytes());
+            int bytes;
+            while ((bytes = fileInputStream.read()) != -1) {
+                byteArrayOutputStream.write(bytes);
+            }
             return byteArrayOutputStream.toByteArray();
         } catch (IOException e) {
             throw new RuntimeException(e);
