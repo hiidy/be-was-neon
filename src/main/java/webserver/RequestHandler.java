@@ -17,8 +17,11 @@ import org.slf4j.LoggerFactory;
 public class RequestHandler implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);
+    private static final String DEFAULT_RESOURCE_PATH = "src/main/resources/static";
+    private static final String INDEX_FILE_NAME = "index.html";
 
-    private Socket connection;
+
+    private final Socket connection;
 
     public RequestHandler(Socket connectionSocket) {
         this.connection = connectionSocket;
@@ -34,10 +37,10 @@ public class RequestHandler implements Runnable {
             String requestLine = readRequestLine(inputRequest);
             String path = extractPathFromRequestLine(requestLine);
 
-            File file = new File("src/main/resources/static" + path);
+            File file = new File(DEFAULT_RESOURCE_PATH + path);
 
             if (file.isDirectory()) {
-                file = new File(file, "index.html");
+                file = new File(file, INDEX_FILE_NAME);
             }
 
             HttpRequest httpRequest = new HttpRequest(requestLine);
