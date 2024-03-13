@@ -35,6 +35,7 @@ public class RequestHandler implements Runnable {
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
             BufferedReader inputRequest = new BufferedReader(new InputStreamReader(in));
             String requestLine = readRequestLine(inputRequest);
+            String headerLine = readHeaderLine(inputRequest);
             String path = extractPathFromRequestLine(requestLine);
 
             File file = new File(DEFAULT_RESOURCE_PATH + path);
@@ -103,6 +104,19 @@ public class RequestHandler implements Runnable {
         }
 
         return requestBuilder.toString();
+    }
+
+    private String readHeaderLine(BufferedReader httpRequest) throws IOException {
+        StringBuilder requestHeaderBuilder = new StringBuilder();
+        String line;
+
+        while ((line = httpRequest.readLine()) != null && !line.isEmpty()) {
+            requestHeaderBuilder.append(line).append('\n');
+            logger.debug("Header Line: {}", line);
+        }
+
+        return requestHeaderBuilder.toString();
+
     }
 
     public String extractPathFromRequestLine(String httpMessage) {
