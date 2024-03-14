@@ -9,34 +9,35 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import webserver.request.HttpRequestLine;
 
-class HttpRequestTest {
+class HttpRequestLineTest {
 
-    private HttpRequest httpRequest;
+    private HttpRequestLine httpRequestLine;
 
     @BeforeEach
     void setUp() {
-        httpRequest = new HttpRequest("GET /registration HTTP/1.1");
+        httpRequestLine = new HttpRequestLine("GET /registration HTTP/1.1");
     }
 
     @Test
     @DisplayName("RequestLine으로부터 Method를 잘 파싱하는지 테스트")
     void getMethodFromRequestLine() {
-        assertThat(httpRequest.getMethod()).isEqualTo("GET");
+        assertThat(httpRequestLine.getMethod()).isEqualTo("GET");
     }
 
     @Test
     @DisplayName("RequestLine으로부터 URI를 잘 파싱하는지 테스트")
     void getURIFromRequestLine() {
-        assertThat(httpRequest.getRequestURI()).isEqualTo("/registration");
+        assertThat(httpRequestLine.getRequestURI()).isEqualTo("/registration");
     }
 
     @Test
     @DisplayName("query parameter가 있을 때 path를 파싱하는 테스트")
     void extractPathFromURI() {
-        httpRequest = new HttpRequest(
+        httpRequestLine = new HttpRequestLine(
             "GET /create?userId=jayden&nickname=%EC%A0%9C%EC%9D%B4%EB%93%A0&password=1234 HTTP/1.1");
-        assertThat(httpRequest.getRequestURI()).isEqualTo("/create");
+        assertThat(httpRequestLine.getRequestURI()).isEqualTo("/create");
     }
 
 
@@ -44,19 +45,19 @@ class HttpRequestTest {
     @CsvSource({"userId, jayden", "nickname, 제이든", "password, 1234"})
     @DisplayName("query parameter가 있을 때 query를 파싱하는 테스트")
     void extractQueryFromURI(String key, String value) {
-        httpRequest = new HttpRequest(
+        httpRequestLine = new HttpRequestLine(
             "GET /create?userId=jayden&nickname=%EC%A0%9C%EC%9D%B4%EB%93%A0&password=1234 HTTP/1.1");
-        Map<String, String> queries = httpRequest.getQueries();
+        Map<String, String> queries = httpRequestLine.getQueries();
         assertThat(queries.get(key)).isEqualTo(value);
     }
 
     @Test
     @DisplayName("HttpRequest객체로부터 파라미터를 불러와서 User 객체가 잘 만들어지는지 테스트")
     void testCreateUserFromQueryParms() {
-        httpRequest = new HttpRequest(
+        httpRequestLine = new HttpRequestLine(
             "GET /create?userId=jayden&nickname=%EC%A0%9C%EC%9D%B4%EB%93%A0&password=1234 HTTP/1.1");
-        User user = new User(httpRequest.getValue("userId"),
-            httpRequest.getValue("nickName"), httpRequest.getValue("password"));
+        User user = new User(httpRequestLine.getValue("userId"),
+            httpRequestLine.getValue("nickName"), httpRequestLine.getValue("password"));
         assertThat(user.getUserId()).isEqualTo("jayden");
     }
 }

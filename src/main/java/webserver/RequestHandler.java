@@ -13,6 +13,7 @@ import java.net.Socket;
 import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import webserver.request.HttpRequestLine;
 
 public class RequestHandler implements Runnable {
 
@@ -44,12 +45,12 @@ public class RequestHandler implements Runnable {
                 file = new File(file, INDEX_FILE_NAME);
             }
 
-            HttpRequest httpRequest = new HttpRequest(requestLine);
+            HttpRequestLine httpRequestLine = new HttpRequestLine(requestLine);
             DataOutputStream dos = new DataOutputStream(out);
 
             if (path.startsWith("/create")) {
-                User user = new User(httpRequest.getValue("userID"),
-                    httpRequest.getValue("nickName"), httpRequest.getValue("password"));
+                User user = new User(httpRequestLine.getValue("userID"),
+                    httpRequestLine.getValue("nickName"), httpRequestLine.getValue("password"));
                 response302(dos);
                 return;
             }
@@ -92,31 +93,6 @@ public class RequestHandler implements Runnable {
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
-    }
-
-    private String readRequestLine(BufferedReader httpRequest) throws IOException {
-        StringBuilder requestBuilder = new StringBuilder();
-        String line;
-
-        if ((line = httpRequest.readLine()) != null && !line.isEmpty()) {
-            requestBuilder.append(line).append('\n');
-            logger.debug("Request Line: {}", line);
-        }
-
-        return requestBuilder.toString();
-    }
-
-    private String readHeaderLine(BufferedReader httpRequest) throws IOException {
-        StringBuilder requestHeaderBuilder = new StringBuilder();
-        String line;
-
-        while ((line = httpRequest.readLine()) != null && !line.isEmpty()) {
-            requestHeaderBuilder.append(line).append('\n');
-            logger.debug("Header Line: {}", line);
-        }
-
-        return requestHeaderBuilder.toString();
-
     }
 
     public String extractPathFromRequestLine(String httpMessage) {
