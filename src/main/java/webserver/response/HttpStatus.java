@@ -2,7 +2,7 @@ package webserver.response;
 
 public enum HttpStatus {
 
-    OK(202),
+    OK(200),
     FOUND(302);
 
     private final int statusCode;

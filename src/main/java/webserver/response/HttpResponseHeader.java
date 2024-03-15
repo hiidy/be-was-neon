@@ -24,9 +24,9 @@ public class HttpResponseHeader {
         return this;
     }
 
-    public HttpResponseHeader setContentLength(HttpResponseBody httpResponseBody) {
+    public HttpResponseHeader setContentLength(int value) {
         responseHeader.put("Content-Length",
-            String.valueOf(httpResponseBody.getResponseBodyLength()));
+            String.valueOf(value));
         return this;
 
     }

@@ -2,13 +2,17 @@ package webserver.response;
 
 public class HttpResponseBody {
 
-    private final String responseBody;
+    private final byte[] responseBody;
 
-    public HttpResponseBody(String responseBody) {
+    public HttpResponseBody(byte[] responseBody) {
         this.responseBody = responseBody;
     }
 
     public int getResponseBodyLength() {
-        return responseBody.getBytes().length;
+        return responseBody.length;
+    }
+
+    public String getHttpResponseBodyMessage() {
+        return new String(responseBody);
     }
 }
