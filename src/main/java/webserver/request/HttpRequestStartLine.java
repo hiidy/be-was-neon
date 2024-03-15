@@ -6,14 +6,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HttpRequestLine {
+public class HttpRequestStartLine {
 
-    private String method;
+    private final String method;
     private String requestURI;
 
     private Map<String, String> queries = new HashMap<>();
 
-    public HttpRequestLine(String requestLine) {
+    public HttpRequestStartLine(String requestLine) {
         String[] requestLines = requestLine.split(" ");
         method = requestLines[0];
         if (hasQueryParameter(requestLines[1])) {
@@ -65,5 +65,4 @@ public class HttpRequestLine {
     public String getValue(String key) {
         return getQueries().get(key);
     }
-
 }
