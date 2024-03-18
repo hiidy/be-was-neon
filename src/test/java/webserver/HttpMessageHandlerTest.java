@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import webserver.request.HttpRequestStartLine;
+import webserver.utils.ReadingFiles;
 
-class RequestHandlerTest {
+class HttpMessageHandlerTest {
 
     @Test
     @DisplayName("RequestLine에서 요청 경로 추출 테스트")
@@ -18,8 +20,8 @@ class RequestHandlerTest {
 
         String expectedPath = "/index.html";
 
-        RequestHandler requestHandler = new RequestHandler(null);
-        assertThat(requestHandler.extractPathFromRequestLine(httpMessage))
+        HttpRequestStartLine httpRequestStartLine = new HttpRequestStartLine(httpMessage);
+        assertThat(httpRequestStartLine.getRequestURI())
             .isEqualTo(expectedPath);
     }
 
@@ -29,9 +31,9 @@ class RequestHandlerTest {
 
         File file = new File("src/main/resources/static/index.html");
 
-        RequestHandler requestHandler = new RequestHandler(null);
+        HttpMessageHandler httpMessageHandler = new HttpMessageHandler(null);
 
-        byte[] actualBytes = requestHandler.readByteFromFile(file);
+        byte[] actualBytes = ReadingFiles.readByteFromFile(file);
 
         byte[] expectedBytes = Files.readAllBytes(file.toPath());
 

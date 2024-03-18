@@ -1,4 +1,4 @@
-package webserver;
+package webserver.request;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -6,14 +6,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HttpRequest {
+public class HttpRequestStartLine {
 
-    private String method;
+    private final String method;
     private String requestURI;
 
     private Map<String, String> queries = new HashMap<>();
 
-    public HttpRequest(String requestLine) {
+    public HttpRequestStartLine(String requestLine) {
         String[] requestLines = requestLine.split(" ");
         method = requestLines[0];
         if (hasQueryParameter(requestLines[1])) {
@@ -65,5 +65,4 @@ public class HttpRequest {
     public String getValue(String key) {
         return getQueries().get(key);
     }
-
 }
