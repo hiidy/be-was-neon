@@ -11,21 +11,23 @@ public class HttpRequest {
     private final HttpRequestStartLine httpRequestStartLine;
     private final HttpRequestHeader httpRequestHeader;
     private HttpRequestBody httpRequestBody;
-    private static final String CRLF = "\r\n";
+    private static final String LF = "\n";
 
     public HttpRequest(BufferedReader httpRequest) throws IOException {
         httpRequestStartLine = new HttpRequestStartLine(readRequestLine(httpRequest));
         httpRequestHeader = new HttpRequestHeader(readHeaderLine(httpRequest));
-//        if (httpRequestStartLine.getMethod().equals("POST")) {
-//            httpRequestBody = new HttpRequestBody(readBodyLine(httpRequest));
-//        }
+        if (httpRequestStartLine.getMethod().equals("POST")) {
+            int contentLength = Integer.parseInt(
+                httpRequestHeader.getHeaders().get("Content-Length"));
+            httpRequestBody = new HttpRequestBody(readBodyLine(httpRequest, contentLength));
+        }
     }
 
     private String readRequestLine(BufferedReader httpRequest) throws IOException {
         StringBuilder requestBuilder = new StringBuilder();
         String line;
-        if ((line = httpRequest.readLine()) != null && line != CRLF) {
-            requestBuilder.append(line).append('\n');
+        if ((line = httpRequest.readLine()) != null && line != LF) {
+            requestBuilder.append(line).append(LF);
             logger.debug("Request Line: {}", line);
         }
 
@@ -37,7 +39,7 @@ public class HttpRequest {
         String line;
 
         while (!(line = httpRequest.readLine()).isEmpty()) {
-            requestHeaderBuilder.append(line).append('\n');
+            requestHeaderBuilder.append(line).append(LF);
             logger.debug("Header Line: {}", line);
         }
         return requestHeaderBuilder.toString();
@@ -49,6 +51,7 @@ public class HttpRequest {
         char[] buffer = new char[contentLength];
         int bytesRead = httpRequest.read(buffer, 0, contentLength);
         requestBodyBuilder.append(buffer, 0, bytesRead);
+        logger.debug("Body Line: {}", requestBodyBuilder);
         return requestBodyBuilder.toString();
     }
 
