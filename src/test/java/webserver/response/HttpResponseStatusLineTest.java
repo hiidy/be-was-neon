@@ -15,7 +15,7 @@ class HttpResponseStatusLineTest {
             HttpVersion.HTTP11, HttpStatus.OK);
 
         assertThat(httpResponseStatusLine.getHttpStatusLineMessage()).isEqualTo(
-            "HTTP/1.1 202 OK");
+            "HTTP/1.1 200 OK");
 
     }
 }
