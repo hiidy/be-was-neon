@@ -63,4 +63,8 @@ public class HttpRequest {
     public HttpRequestHeader getHttpRequestHeader() {
         return httpRequestHeader;
     }
+
+    public HttpRequestBody getHttpRequestBody() {
+        return httpRequestBody;
+    }
 }

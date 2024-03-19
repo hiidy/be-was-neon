@@ -8,4 +8,7 @@ public class HttpRequestBody {
         this.bodyMessage = bodyMessage;
     }
 
+    public String getBodyMessage() {
+        return bodyMessage;
+    }
 }
