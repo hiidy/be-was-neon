@@ -9,7 +9,7 @@ import webserver.response.HttpResponseHeader;
 import webserver.response.HttpResponseStatusLine;
 import webserver.response.HttpStatus;
 import webserver.response.HttpVersion;
-import webserver.utils.ReadingFiles;
+import webserver.utils.HttpMessageUtils;
 
 public class IndexManager {
 
@@ -22,7 +22,7 @@ public class IndexManager {
         if (file.isDirectory()) {
             file = new File(sourceRelativePath + requestURI + "/" + "index.html");
         }
-        byte[] body = ReadingFiles.readByteFromFile(file);
+        byte[] body = HttpMessageUtils.readByteFromFile(file);
 
         HttpResponseStatusLine httpResponseStatusLine = new HttpResponseStatusLine(
             HttpVersion.HTTP11, HttpStatus.OK);
