@@ -8,7 +8,7 @@ import java.nio.file.Files;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import webserver.request.HttpRequestStartLine;
-import webserver.utils.ReadingFiles;
+import webserver.utils.HttpMessageUtils;
 
 class HttpMessageHandlerTest {
 
@@ -33,7 +33,7 @@ class HttpMessageHandlerTest {
 
         HttpMessageHandler httpMessageHandler = new HttpMessageHandler(null);
 
-        byte[] actualBytes = ReadingFiles.readByteFromFile(file);
+        byte[] actualBytes = HttpMessageUtils.readByteFromFile(file);
 
         byte[] expectedBytes = Files.readAllBytes(file.toPath());
 
