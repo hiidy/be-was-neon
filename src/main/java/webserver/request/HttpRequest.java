@@ -11,7 +11,7 @@ public class HttpRequest {
     private final HttpRequestStartLine httpRequestStartLine;
     private final HttpRequestHeader httpRequestHeader;
     private HttpRequestBody httpRequestBody;
-    private static final String LF = "\n";
+    private static final String CRLF = "\r\n";
 
     public HttpRequest(BufferedReader httpRequest) throws IOException {
         httpRequestStartLine = new HttpRequestStartLine(readRequestLine(httpRequest));
@@ -26,8 +26,8 @@ public class HttpRequest {
     private String readRequestLine(BufferedReader httpRequest) throws IOException {
         StringBuilder requestBuilder = new StringBuilder();
         String line;
-        if ((line = httpRequest.readLine()) != null && line != LF) {
-            requestBuilder.append(line).append(LF);
+        if ((line = httpRequest.readLine()) != null && line != CRLF) {
+            requestBuilder.append(line).append(CRLF);
             logger.debug("Request Line: {}", line);
         }
 
@@ -39,7 +39,7 @@ public class HttpRequest {
         String line;
 
         while (!(line = httpRequest.readLine()).isEmpty()) {
-            requestHeaderBuilder.append(line).append(LF);
+            requestHeaderBuilder.append(line).append(CRLF);
             logger.debug("Header Line: {}", line);
         }
         return requestHeaderBuilder.toString();

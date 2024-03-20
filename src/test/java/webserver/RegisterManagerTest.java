@@ -20,25 +20,25 @@ class RegisterManagerTest {
     @BeforeEach
     void setUp() throws IOException {
         String getHttpRequestString =
-            "GET /create?userId=jayden&nickname=%EC%A0%9C%EC%9D%B4%EB%93%A0&password=1234 HTTP/1.1\n"
+            "GET /create?userId=jayden&nickname=%EC%A0%9C%EC%9D%B4%EB%93%A0&password=1234 HTTP/1.1\r\n"
                 +
-                "Host: localhost:8080\n" +
-                "Connection: keep-alive\n" +
-                "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\n"
+                "Host: localhost:8080\r\n" +
+                "Connection: keep-alive\r\n" +
+                "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\r\n"
                 +
-                "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36\n"
+                "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36\r\n"
                 +
-                "Accept-Encoding: gzip, deflate, br\n" +
-                "Accept-Language: en-US,en;q=0.9\n" +
-                "\n";
+                "Accept-Encoding: gzip, deflate, br\r\n" +
+                "Accept-Language: en-US,en;q=0.9\r\n" +
+                "\r\n";
 
         String postHttpRequestString =
-            "POST /create HTTP/1.1\n" +
-                "Host: localhost:8080\n" +
-                "Connection: keep-alive\n" +
-                "Content-Type: application/x-www-form-urlencoded\n" +
-                "Content-Length: 64\n" + // 바디 길이 설정
-                "\n" +
+            "POST /create HTTP/1.1\r\n" +
+                "Host: localhost:8080\r\n" +
+                "Connection: keep-alive\r\n" +
+                "Content-Type: application/x-www-form-urlencoded\r\n" +
+                "Content-Length: 64\r\n" + // 바디 길이 설정
+                "\r\n" +
                 "userId=jayden&nickname=%EC%A0%9C%EC%9D%B4%EB%93%A0&password=1234"; // POST 요청 바디
 
         BufferedReader getReader = new BufferedReader(new StringReader(getHttpRequestString));
