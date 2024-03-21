@@ -20,9 +20,8 @@ public class RegisterManager {
     private static final String REDIRECT_PATH = "/index.html";
     private static final Map<String, String> registerInformation = new HashMap<>();
 
-    public static HttpResponse registerResponse(HttpRequest httpRequest) {
+    public HttpResponse registerResponse(HttpRequest httpRequest) {
 
-        String requestURI = httpRequest.getHttpRequestStartLine().getRequestURI();
         File file = new File(sourceRelativePath + REDIRECT_PATH);
 
         byte[] body = HttpMessageUtils.readByteFromFile(file);
@@ -52,7 +51,7 @@ public class RegisterManager {
         return new HttpResponse(httpResponseStatusLine, httpResponseHeader, httpResponseBody);
     }
 
-    public static Map<String, String> getRegisterInformation() {
+    public Map<String, String> getRegisterInformation() {
         return Collections.unmodifiableMap(registerInformation);
     }
 }

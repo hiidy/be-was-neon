@@ -15,7 +15,7 @@ public class IndexManager {
 
     private static final String sourceRelativePath = "src/main/resources/static";
 
-    public static HttpResponse indexResponse(HttpRequest httpRequest) {
+    public HttpResponse indexResponse(HttpRequest httpRequest) {
         String requestURI = httpRequest.getHttpRequestStartLine().getRequestURI();
 
         File file = new File(sourceRelativePath + requestURI);

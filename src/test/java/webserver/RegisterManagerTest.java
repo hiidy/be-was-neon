@@ -10,12 +10,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import webserver.request.HttpRequest;
-import webserver.response.HttpResponse;
 
 class RegisterManagerTest {
 
     private HttpRequest getHttpRequest;
     private HttpRequest postHttpRequest;
+    private RegisterManager registerManager;
 
     @BeforeEach
     void setUp() throws IOException {
@@ -45,43 +45,45 @@ class RegisterManagerTest {
         BufferedReader postReader = new BufferedReader(new StringReader(postHttpRequestString));
         getHttpRequest = new HttpRequest(getReader);
         postHttpRequest = new HttpRequest(postReader);
+        registerManager = new RegisterManager();
+
     }
 
     @Test
     @DisplayName("GET 요청일 때 userId 정보가 Register Manager에 잘 저장되는지 확인하는 테스트")
     void getUserIdFromGetRequest() {
-        HttpResponse httpResponse = RegisterManager.registerResponse(getHttpRequest);
-        assertThat(RegisterManager.getRegisterInformation().get("userId")).isEqualTo("jayden");
+        registerManager.registerResponse(getHttpRequest);
+        assertThat(registerManager.getRegisterInformation().get("userId")).isEqualTo("jayden");
     }
 
     @Test
     @DisplayName("GET 요청일 때 nickName 정보가 Register Manager에 잘 저장되는지 확인하는 테스트")
     void getNicknameFromGetRequest() {
-        HttpResponse httpResponse = RegisterManager.registerResponse(getHttpRequest);
-        assertThat(RegisterManager.getRegisterInformation().get("nickname")).isEqualTo("제이든");
+        registerManager.registerResponse(getHttpRequest);
+        assertThat(registerManager.getRegisterInformation().get("nickname")).isEqualTo("제이든");
     }
 
     @Test
     @DisplayName("POST 요청일 때 nickName 정보가 Register Manager에 잘 저장되는지 확인하는 테스트")
     void getUserIdFromPostRequest() {
-        HttpResponse httpResponse = RegisterManager.registerResponse(postHttpRequest);
-        assertThat(RegisterManager.getRegisterInformation().get("userId")).isEqualTo("jayden");
+        registerManager.registerResponse(postHttpRequest);
+        assertThat(registerManager.getRegisterInformation().get("userId")).isEqualTo("jayden");
     }
 
     @Test
     @DisplayName("GET 요청일 때 nickName 정보가 Register Manager에 잘 저장되는지 확인하는 테스트")
     void getNicknameFromPostRequest() {
-        HttpResponse httpResponse = RegisterManager.registerResponse(postHttpRequest);
-        assertThat(RegisterManager.getRegisterInformation().get("nickname")).isEqualTo("제이든");
+        registerManager.registerResponse(postHttpRequest);
+        assertThat(registerManager.getRegisterInformation().get("nickname")).isEqualTo("제이든");
     }
 
     @Test
     @DisplayName("회원가입 Request를보내고 User 객체가 잘 만들어지는지 테스트")
     void testCreateUserFromQueryParms() {
-        HttpResponse httpResponse = RegisterManager.registerResponse(postHttpRequest);
-        User user = new User(RegisterManager.getRegisterInformation().get("userId"),
-            RegisterManager.getRegisterInformation().get("nickname"),
-            RegisterManager.getRegisterInformation().get("password"));
+        registerManager.registerResponse(postHttpRequest);
+        User user = new User(registerManager.getRegisterInformation().get("userId"),
+            registerManager.getRegisterInformation().get("nickname"),
+            registerManager.getRegisterInformation().get("password"));
         assertThat(user.getUserId()).isEqualTo("jayden");
     }
 }
