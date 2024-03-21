@@ -1,5 +1,6 @@
 package webserver.response;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -36,5 +37,9 @@ public class HttpResponseHeader {
             .map(entry -> entry.getKey() + ": " + entry.getValue())
             .reduce((s1, s2) -> s1 + CLRF + s2)
             .orElse("");
+    }
+
+    public Map<String, String> getResponseHeader() {
+        return Collections.unmodifiableMap(responseHeader);
     }
 }
