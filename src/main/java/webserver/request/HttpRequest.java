@@ -47,10 +47,19 @@ public class HttpRequest {
 
     private String readBodyLine(BufferedReader httpRequest, int contentLength) throws IOException {
         StringBuilder requestBodyBuilder = new StringBuilder();
+        int totalBytesRead = 0;
+        char[] buffer = new char[1024];
 
-        char[] buffer = new char[contentLength];
-        int bytesRead = httpRequest.read(buffer, 0, contentLength);
-        requestBodyBuilder.append(buffer, 0, bytesRead);
+        while (totalBytesRead < contentLength) {
+            int bytesRead = httpRequest.read(buffer, 0,
+                Math.min(buffer.length, contentLength - totalBytesRead));
+            if (bytesRead == -1) {
+                break;
+            }
+            requestBodyBuilder.append(buffer, 0, bytesRead);
+            totalBytesRead += bytesRead;
+        }
+
         logger.debug("Body Line: {}", requestBodyBuilder);
         return requestBodyBuilder.toString();
     }
