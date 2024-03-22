@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import webserver.request.HttpRequest;
 import webserver.response.HttpResponse;
 import webserver.response.HttpResponseBody;
@@ -20,10 +22,11 @@ import webserver.utils.HttpMessageUtils;
 
 public class LoginManager {
 
+    private static final Logger logger = LoggerFactory.getLogger(LoginManager.class);
     private static final String sourceRelativePath = "src/main/resources/static";
     private static final String REGISTER_PATH = "/registration/index.html";
     private static final String LOGIN_PATH = "/login/index.html";
-    private static final String MAIN_INDEX_PATH = "./index.html";
+    private static final String MAIN_INDEX_PATH = "/index.html";
     private static final Map<String, String> loginInformation = new HashMap<>();
     private static final SessionStore sessionStore = new SessionStore();
 
@@ -42,11 +45,11 @@ public class LoginManager {
             return redirectPage(LOGIN_PATH);
         }
 
+        logger.debug("User ID {} success", userId);
         Session session = new Session(createSession());
         sessionStore.addSession(session, userId);
         Cookie cookie = new Cookie(session.getSessionId());
         cookie.setPath("/");
-
         return successLogin(MAIN_INDEX_PATH, cookie);
     }
 
