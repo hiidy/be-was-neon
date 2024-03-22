@@ -8,5 +8,7 @@ public class Session {
         this.sessionId = sessionId;
     }
 
-
+    public String getSessionId() {
+        return sessionId;
+    }
 }
