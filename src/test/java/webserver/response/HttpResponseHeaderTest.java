@@ -29,7 +29,7 @@ class HttpResponseHeaderTest {
         HttpResponseHeader httpResponseHeader = new HttpResponseHeader();
         httpResponseHeader.setCookie(cookie);
 
-        String expected = "Set-Cookie: Path=/; sid=1234";
+        String expected = "Set-Cookie: sid=1234; Path=/";
         assertThat(httpResponseHeader.getHttpResponseHeaderMessage()).isEqualTo(expected);
     }
 }
