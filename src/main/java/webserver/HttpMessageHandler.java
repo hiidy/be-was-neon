@@ -45,6 +45,8 @@ public class HttpMessageHandler implements Runnable {
     private HttpResponse selectManager(HttpRequest httpRequest) {
         if (httpRequest.getHttpRequestStartLine().getRequestURI().startsWith("/create")) {
             return new RegisterManager().registerResponse(httpRequest);
+        } else if (httpRequest.getHttpRequestStartLine().getRequestURI().startsWith("/join")) {
+            return new LoginManager().loginResponse(httpRequest);
         }
         return new IndexManager().indexResponse(httpRequest);
     }
