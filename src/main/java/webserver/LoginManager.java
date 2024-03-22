@@ -48,8 +48,8 @@ public class LoginManager {
         logger.debug("User ID {} success", userId);
         Session session = new Session(createSession());
         sessionStore.addSession(session, userId);
-        Cookie cookie = new Cookie(session.getSessionId());
-        cookie.setPath("/");
+        Cookie cookie = new Cookie();
+        cookie.setSessionID(session.getSessionId()).setPath("/");
         return successLogin(MAIN_INDEX_PATH, cookie);
     }
 

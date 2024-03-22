@@ -1,25 +1,29 @@
 package webserver;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Cookie {
 
-    private final String cookieSessionID;
-    private String cookiePath;
+    private final Map<String, String> cookies;
 
 
-    public Cookie(String sessionID) {
-        this.cookieSessionID = sessionID;
+    public Cookie() {
+        cookies = new HashMap<>();
     }
 
     public Cookie setPath(String path) {
-        this.cookiePath = path;
+        cookies.put("Path", path);
         return this;
     }
 
-    public String getCookieSessionID() {
-        return cookieSessionID;
+    public Cookie setSessionID(String sessionID) {
+        cookies.put("sid", sessionID);
+        return this;
     }
 
-    public String getCookiePath() {
-        return cookiePath;
+    public Map<String, String> getCookies() {
+        return Collections.unmodifiableMap(cookies);
     }
 }
