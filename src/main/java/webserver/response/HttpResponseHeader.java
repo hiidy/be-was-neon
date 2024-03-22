@@ -3,6 +3,7 @@ package webserver.response;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import webserver.Cookie;
 
 public class HttpResponseHeader {
 
@@ -30,6 +31,11 @@ public class HttpResponseHeader {
             String.valueOf(value));
         return this;
 
+    }
+
+    public HttpResponseHeader setCookie(Cookie cookie) {
+        responseHeader.put("Set-Cookie", cookie.getCookieSessionID());
+        return this;
     }
 
     public String getHttpResponseHeaderMessage() {
