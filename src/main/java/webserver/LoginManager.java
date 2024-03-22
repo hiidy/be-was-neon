@@ -5,6 +5,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import model.User;
 import webserver.request.HttpRequest;
 import webserver.response.HttpResponse;
@@ -13,6 +14,8 @@ import webserver.response.HttpResponseHeader;
 import webserver.response.HttpResponseStatusLine;
 import webserver.response.HttpStatus;
 import webserver.response.HttpVersion;
+import webserver.session.Session;
+import webserver.session.SessionStore;
 import webserver.utils.HttpMessageUtils;
 
 public class LoginManager {
@@ -20,7 +23,9 @@ public class LoginManager {
     private static final String sourceRelativePath = "src/main/resources/static";
     private static final String REGISTER_PATH = "/registration/index.html";
     private static final String LOGIN_PATH = "/login/index.html";
+    private static final String MAIN_INDEX_PATH = "./index.html";
     private static final Map<String, String> loginInformation = new HashMap<>();
+    private static final SessionStore sessionStore = new SessionStore();
 
     public HttpResponse loginResponse(HttpRequest httpRequest) {
 
@@ -37,7 +42,12 @@ public class LoginManager {
             return redirectPage(LOGIN_PATH);
         }
 
-        throw new UnsupportedOperationException("not implemented yet");
+        Session session = new Session(createSession());
+        sessionStore.addSession(session, userId);
+        Cookie cookie = new Cookie(session.getSessionId());
+        cookie.setPath("/");
+
+        return successLogin(MAIN_INDEX_PATH, cookie);
     }
 
     private boolean findUserId(String userId) {
@@ -63,6 +73,26 @@ public class LoginManager {
         HttpResponseBody httpResponseBody = new HttpResponseBody(body);
 
         return new HttpResponse(httpResponseStatusLine, httpResponseHeader, httpResponseBody);
+    }
+
+    private HttpResponse successLogin(String redirectPath, Cookie cookie) {
+
+        File file = new File(sourceRelativePath + redirectPath);
+        byte[] body = HttpMessageUtils.readByteFromFile(file);
+
+        HttpResponseStatusLine httpResponseStatusLine = new HttpResponseStatusLine(
+            HttpVersion.HTTP11, HttpStatus.FOUND);
+
+        HttpResponseHeader httpResponseHeader = new HttpResponseHeader()
+            .setLocation(redirectPath).setCookie(cookie);
+
+        HttpResponseBody httpResponseBody = new HttpResponseBody(body);
+
+        return new HttpResponse(httpResponseStatusLine, httpResponseHeader, httpResponseBody);
+    }
+
+    private String createSession() {
+        return UUID.randomUUID().toString();
     }
 
 
