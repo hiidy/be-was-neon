@@ -34,9 +34,24 @@ public class HttpResponseHeader {
     }
 
     public HttpResponseHeader setCookie(Cookie cookie) {
-        responseHeader.put("Set-Cookie", cookie.getCookieSessionID());
+        responseHeader.put("Set-Cookie", concatenateCookies(cookie));
         return this;
     }
+
+    public String concatenateCookies(Cookie cookie) {
+        StringBuilder sb = new StringBuilder();
+        Map<String, String> cookies = cookie.getCookies();
+        int i = 0;
+        for (Map.Entry<String, String> entry : cookies.entrySet()) {
+            sb.append(entry.getKey()).append("=").append(entry.getValue());
+            if (i < cookies.size() - 1) {
+                sb.append("; ");
+            }
+            i++;
+        }
+        return sb.toString();
+    }
+
 
     public String getHttpResponseHeaderMessage() {
         return responseHeader.entrySet().stream()
