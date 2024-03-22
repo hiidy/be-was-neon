@@ -1,5 +1,6 @@
 package webserver;
 
+import db.Database;
 import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
@@ -45,8 +46,10 @@ public class RegisterManager {
                 registerInformation);
         }
         User user = new User(registerInformation.get("userId"),
-            registerInformation.get("nickName"),
-            registerInformation.get("password"));
+            registerInformation.get("password"),
+            registerInformation.get("nickName"));
+
+        Database.addUser(user);
 
         return new HttpResponse(httpResponseStatusLine, httpResponseHeader, httpResponseBody);
     }

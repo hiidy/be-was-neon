@@ -85,5 +85,7 @@ class RegisterManagerTest {
             registerManager.getRegisterInformation().get("nickname"),
             registerManager.getRegisterInformation().get("password"));
         assertThat(user.getUserId()).isEqualTo("jayden");
+        assertThat(user.getNickName()).isEqualTo("제이든");
+        assertThat(user.getPassword()).isEqualTo("1234");
     }
 }
