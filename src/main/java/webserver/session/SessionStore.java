@@ -16,11 +16,8 @@ public class SessionStore {
         return Collections.unmodifiableMap(sessions);
     }
 
-//    public static void removeSession(String sessionId) {
-//        sessions.entrySet().removeIf(entry -> entry.getKey().getSessionId().equals(sessionId));
-//    }
 
-    public static void removeSession(Session session) {
-        sessions.remove(session.getSessionId());
+    public static void removeSession(String sessionId) {
+        sessions.remove(sessionId);
     }
 }
