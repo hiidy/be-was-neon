@@ -1,4 +1,4 @@
-package webserver;
+package webserver.session;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;

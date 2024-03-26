@@ -3,7 +3,7 @@ package webserver.response;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import webserver.Cookie;
+import webserver.session.Cookie;
 
 public class HttpResponseHeader {
 
