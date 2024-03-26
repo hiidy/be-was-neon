@@ -82,8 +82,8 @@ class RegisterManagerTest {
     void testCreateUserFromQueryParms() {
         registerManager.registerResponse(postHttpRequest);
         User user = new User(registerManager.getRegisterInformation().get("userId"),
-            registerManager.getRegisterInformation().get("nickname"),
-            registerManager.getRegisterInformation().get("password"));
+            registerManager.getRegisterInformation().get("password"),
+            registerManager.getRegisterInformation().get("nickname"));
         assertThat(user.getUserId()).isEqualTo("jayden");
         assertThat(user.getNickName()).isEqualTo("제이든");
         assertThat(user.getPassword()).isEqualTo("1234");
