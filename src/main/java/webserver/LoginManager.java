@@ -16,7 +16,6 @@ import webserver.response.HttpResponseHeader;
 import webserver.response.HttpResponseStatusLine;
 import webserver.response.HttpStatus;
 import webserver.response.HttpVersion;
-import webserver.session.Cookie;
 import webserver.session.Session;
 import webserver.session.SessionStore;
 import webserver.utils.HttpMessageUtils;
@@ -48,7 +47,7 @@ public class LoginManager {
 
         logger.debug("User ID {} success", userId);
         Session session = new Session(createSession());
-        sessionStore.addSession(session);
+        sessionStore.addSession(session, userId);
         Cookie cookie = new Cookie();
         cookie.setSessionID(session.getSessionId()).setPath("/");
         return successLogin(MAIN_INDEX_PATH, cookie);
