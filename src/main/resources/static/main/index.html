@@ -7,7 +7,7 @@
   <link href="../global.css" rel="stylesheet"/>
   <link href="../main.css" rel="stylesheet"/>
   <style>
-    .header__menu__item__nickname {
+    .header__menu__item {
       margin-right: 20px;
       font-weight: bold;
       font-family: "Noto Sans KR", serif;
@@ -22,6 +22,11 @@
       <li class="header__menu__item">
         <p class="header__menu__item__nickname">%account%</p>
         <a class="btn btn_contained btn_size_s" href="/article">글쓰기</a>
+      </li>
+      <li class="header__menu__item">
+        <a class="btn btn_ghost btn_size_s" href="/user/list.html">
+          유저목록
+        </a>
       </li>
       <li class="header__menu__item">
         <form action="/logout" method="POST">
