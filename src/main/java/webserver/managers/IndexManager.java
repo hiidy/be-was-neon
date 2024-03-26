@@ -3,6 +3,7 @@ package webserver.managers;
 import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import model.User;
 import webserver.request.HttpRequest;
 import webserver.response.ContentType;
 import webserver.response.HttpResponse;
@@ -44,7 +45,7 @@ public class IndexManager {
         HttpResponseBody httpResponseBody = new HttpResponseBody(body);
 
         if (requestURI.equals("/main/index.html")) {
-            httpResponseBody = addAccountName(httpResponseBody, findUserID(
+            httpResponseBody = addAccountName(httpResponseBody, findUserId(
                 httpRequest.getHttpRequestHeader().getHeaders().get("Cookie").split("=")[1]));
         }
 
@@ -52,13 +53,15 @@ public class IndexManager {
 
     }
 
-    private String findUserID(String sessionId) {
+    private String findUserId(String sessionId) {
         return SessionStore.getSessions().entrySet().stream()
-            .filter(entry -> entry.getKey().getSessionId().equals(sessionId))
-            .map(entry -> entry.getValue())
+            .filter(entry -> entry.getKey().equals(sessionId))
+            .map(entry -> entry.getValue().getAttribute("user"))
+            .map(user -> ((User) user).getUserId())
             .findFirst()
             .orElse("");
     }
+
 
     private HttpResponseBody addAccountName(HttpResponseBody httpResponseBody, String userId) {
         String bodyMessage = new String(httpResponseBody.getHttpResponseBodyMessage());
@@ -73,7 +76,7 @@ public class IndexManager {
             String userSID = httpRequest.getHttpRequestHeader().getHeaders().get("Cookie")
                 .split("=")[1];
             return SessionStore.getSessions().entrySet().stream()
-                .anyMatch(entry -> entry.getKey().getSessionId().equals(userSID));
+                .anyMatch(entry -> entry.getKey().equals(userSID));
         }
         return false;
     }
