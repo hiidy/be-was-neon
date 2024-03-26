@@ -6,17 +6,20 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class SessionStore {
 
-    private static final Map<Session, String> sessions = new ConcurrentHashMap<>();
+    private static final Map<String, Session> sessions = new ConcurrentHashMap<>();
 
-    public static void addSession(Session session, String userId) {
-        sessions.put(session, userId);
+    private SessionStore() {
     }
 
-    public Map<Session, String> getSessions() {
+    public static void addSession(Session session) {
+        sessions.put(session.getSessionId(), session);
+    }
+
+    public static Map<String, Session> getSessions() {
         return Collections.unmodifiableMap(sessions);
     }
 
     public static void removeSession(String sessionId) {
-        sessions.entrySet().removeIf(entry -> entry.getKey().getSessionId().equals(sessionId));
+        sessions.remove(sessionId);
     }
 }
