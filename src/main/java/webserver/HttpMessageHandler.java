@@ -13,6 +13,7 @@ import webserver.managers.IndexManager;
 import webserver.managers.LoginManager;
 import webserver.managers.LogoutManager;
 import webserver.managers.RegisterManager;
+import webserver.managers.UserListManager;
 import webserver.request.HttpRequest;
 import webserver.response.HttpResponse;
 
@@ -53,6 +54,8 @@ public class HttpMessageHandler implements Runnable {
             return new LoginManager().loginResponse(httpRequest);
         } else if (httpRequest.getHttpRequestStartLine().getRequestURI().startsWith("/logout")) {
             return new LogoutManager().logoutResponse(httpRequest);
+        } else if (httpRequest.getHttpRequestStartLine().getRequestURI().startsWith("/user/list")) {
+            return new UserListManager().userListResponse(httpRequest);
         }
         return new IndexManager().indexResponse(httpRequest);
     }
