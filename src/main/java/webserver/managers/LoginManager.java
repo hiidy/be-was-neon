@@ -49,8 +49,7 @@ public class LoginManager {
         Session session = new Session(createSession());
         session.setAttribute("user", Database.findUserById(userId));
         SessionStore.addSession(session);
-        Cookie cookie = new Cookie();
-        cookie.setSessionID(session.getSessionId()).setPath("/");
+        Cookie cookie = new Cookie("sid", session.getSessionId()).setPath("/").setMaxAge(3600);
         return successLogin(MAIN_INDEX_PATH, cookie);
     }
 

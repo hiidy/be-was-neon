@@ -40,6 +40,7 @@ public class HttpResponseHeader {
 
     public String concatenateCookies(Cookie cookie) {
         StringBuilder sb = new StringBuilder();
+        sb.append(cookie.getName()).append("=").append(cookie.getValue()).append("; ");
         Map<String, String> cookies = cookie.getCookies();
         int i = 0;
         for (Map.Entry<String, String> entry : cookies.entrySet()) {
