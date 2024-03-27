@@ -1,7 +1,9 @@
 package webserver.response;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import webserver.session.Cookie;
 
 public class HttpResponseHeader {
 
@@ -31,10 +33,34 @@ public class HttpResponseHeader {
 
     }
 
+    public HttpResponseHeader setCookie(Cookie cookie) {
+        responseHeader.put("Set-Cookie", concatenateCookies(cookie));
+        return this;
+    }
+
+    public String concatenateCookies(Cookie cookie) {
+        StringBuilder sb = new StringBuilder();
+        Map<String, String> cookies = cookie.getCookies();
+        int i = 0;
+        for (Map.Entry<String, String> entry : cookies.entrySet()) {
+            sb.append(entry.getKey()).append("=").append(entry.getValue());
+            if (i < cookies.size() - 1) {
+                sb.append("; ");
+            }
+            i++;
+        }
+        return sb.toString();
+    }
+
+
     public String getHttpResponseHeaderMessage() {
         return responseHeader.entrySet().stream()
             .map(entry -> entry.getKey() + ": " + entry.getValue())
             .reduce((s1, s2) -> s1 + CLRF + s2)
             .orElse("");
+    }
+
+    public Map<String, String> getResponseHeader() {
+        return Collections.unmodifiableMap(responseHeader);
     }
 }

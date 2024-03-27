@@ -26,5 +26,15 @@ public class HttpResponse {
             + httpResponseBody.getHttpResponseBodyMessage();
     }
 
+    public HttpResponseStatusLine getHttpResponseStatusLine() {
+        return httpResponseStatusLine;
+    }
 
+    public HttpResponseHeader getHttpResponseHeader() {
+        return httpResponseHeader;
+    }
+
+    public HttpResponseBody getHttpResponseBody() {
+        return httpResponseBody;
+    }
 }
