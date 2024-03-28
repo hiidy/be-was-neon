@@ -37,4 +37,14 @@ public class HttpResponse {
     public HttpResponseBody getHttpResponseBody() {
         return httpResponseBody;
     }
+
+    public void sendRedirect(HttpStatus httpStatus, String Location) {
+        setHttpStatus(httpStatus);
+    }
+
+    public void setHttpStatus(HttpStatus httpStatus) {
+        httpResponseStatusLine.setHttpStatus(httpStatus);
+    }
+
+
 }

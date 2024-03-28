@@ -4,7 +4,7 @@ public class HttpResponseStatusLine {
 
 
     private final HttpVersion httpVersion;
-    private final HttpStatus httpStatus;
+    private HttpStatus httpStatus;
 
     public HttpResponseStatusLine(HttpVersion httpVersion, HttpStatus httpStatus) {
         this.httpVersion = httpVersion;
@@ -14,5 +14,9 @@ public class HttpResponseStatusLine {
     public String getHttpStatusLineMessage() {
         return httpVersion.getHttpVersion() + ' ' + httpStatus.getStatusCode() + ' '
             + httpStatus.name();
+    }
+
+    public void setHttpStatus(HttpStatus httpStatus) {
+        this.httpStatus = httpStatus;
     }
 }
