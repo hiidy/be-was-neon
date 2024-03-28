@@ -38,7 +38,7 @@ public class Cookie {
         return this;
     }
 
-    public Map<String, String> getCookies() {
+    public Map<String, String> getAttributes() {
         return Collections.unmodifiableMap(attributes);
     }
 
@@ -52,6 +52,6 @@ public class Cookie {
     }
 
     public String getAttributeValue(String key) {
-        return getCookies().get(key);
+        return getAttributes().get(key);
     }
 }
