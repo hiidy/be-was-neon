@@ -64,7 +64,7 @@ public class IndexManager {
 
 
     private HttpResponseBody addAccountName(HttpResponseBody httpResponseBody, String userId) {
-        String bodyMessage = new String(httpResponseBody.getHttpResponseBodyMessage());
+        String bodyMessage = httpResponseBody.getHttpResponseBodyMessage();
         Pattern pattern = Pattern.compile("%account%");
         Matcher matcher = pattern.matcher(bodyMessage);
         return new HttpResponseBody(matcher.replaceAll(userId).getBytes());
