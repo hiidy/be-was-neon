@@ -15,6 +15,7 @@ import webserver.response.HttpResponseHeader;
 import webserver.response.HttpResponseStatusLine;
 import webserver.response.HttpStatus;
 import webserver.response.HttpVersion;
+import webserver.session.SessionStore;
 import webserver.utils.HttpMessageUtils;
 
 public class UserListManager {
@@ -38,6 +39,13 @@ public class UserListManager {
             .setContentLength(body.length);
 
         HttpResponseBody httpResponseBody = new HttpResponseBody(body);
+
+        if (!hasSession(httpRequest)) {
+            HttpResponse httpResponse = new HttpResponse(httpResponseStatusLine, httpResponseHeader,
+                httpResponseBody);
+            httpResponse.sendRedirect(HttpStatus.FOUND, "/login/index.html");
+            return httpResponse;
+        }
 
         return new HttpResponse(httpResponseStatusLine, httpResponseHeader,
             addUserList(httpResponseBody));
@@ -64,6 +72,16 @@ public class UserListManager {
         Matcher matcher = pattern.matcher(body);
         logger.debug("userListHTML: {}", userListHTML);
         return matcher.replaceFirst(userListHTML);
+    }
+
+    private boolean hasSession(HttpRequest httpRequest) {
+        if (httpRequest.getHttpRequestHeader().getHeaders().containsKey("Cookie")) {
+            String userSID = httpRequest.getHttpRequestHeader().getHeaders().get("Cookie")
+                .split("=")[1];
+            return SessionStore.getSessions().entrySet().stream()
+                .anyMatch(entry -> entry.getKey().equals(userSID));
+        }
+        return false;
     }
 
 }

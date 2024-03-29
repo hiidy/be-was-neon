@@ -63,7 +63,7 @@ class LoginManagerTest {
 
         loginManager.loginResponse(wrongIdRequest);
         HttpResponse response = loginManager.loginResponse(wrongIdRequest);
-        Assertions.assertThat(response.getHttpResponseHeader().getResponseHeader().get("Location"))
+        Assertions.assertThat(response.getHttpResponseHeader().getHeaderValue("Location"))
             .isEqualTo("/registration/index.html");
     }
 
@@ -76,7 +76,7 @@ class LoginManagerTest {
 
         loginManager.loginResponse(wrongPasswordRequest);
         HttpResponse response = loginManager.loginResponse(wrongPasswordRequest);
-        Assertions.assertThat(response.getHttpResponseHeader().getResponseHeader().get("Location"))
+        Assertions.assertThat(response.getHttpResponseHeader().getHeaderValue("Location"))
             .isEqualTo("/login/index.html");
     }
 }
