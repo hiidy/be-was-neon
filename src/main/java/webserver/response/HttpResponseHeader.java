@@ -1,7 +1,8 @@
 package webserver.response;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import webserver.Cookie;
 
@@ -10,31 +11,48 @@ public class HttpResponseHeader {
     private static final String CLRF = "\r\n";
 
 
-    private final Map<String, String> responseHeader;
+    private final List<HttpResponseHeaderField> responseHeader = new ArrayList<>();
 
-    public HttpResponseHeader() {
-        this.responseHeader = new LinkedHashMap<>();
+
+    public void addHeader(String name, String value) {
+        HttpResponseHeaderField headerField = createHeaderField();
+        headerField.setName(name);
+        headerField.setValue(value);
+    }
+
+    private HttpResponseHeaderField createHeaderField() {
+        HttpResponseHeaderField headerField = new HttpResponseHeaderField();
+        responseHeader.add(headerField);
+        return headerField;
+    }
+
+    public void setHeader(String name, String value) {
+        HttpResponseHeaderField headerField = responseHeader.stream()
+            .filter(header -> header.getName().equals(name))
+            .findFirst()
+            .orElseGet(this::createHeaderField);
+        headerField.setName(name);
+        headerField.setValue(value);
     }
 
     public HttpResponseHeader setLocation(String redirectionPath) {
-        responseHeader.put("Location", redirectionPath);
+        addHeader("Location", redirectionPath);
         return this;
     }
 
     public HttpResponseHeader setContentType(ContentType contentType) {
-        responseHeader.put("Content-Type", contentType.getMimeName());
+        addHeader("Content-Type", contentType.getMimeName());
         return this;
     }
 
     public HttpResponseHeader setContentLength(int value) {
-        responseHeader.put("Content-Length",
-            String.valueOf(value));
+        addHeader("Content-Length", String.valueOf(value));
         return this;
 
     }
 
     public HttpResponseHeader setCookie(Cookie cookie) {
-        responseHeader.put("Set-Cookie", concatenateCookies(cookie));
+        addHeader("Set-Cookie", concatenateCookies(cookie));
         return this;
     }
 
@@ -53,15 +71,22 @@ public class HttpResponseHeader {
         return sb.toString();
     }
 
-
     public String getHttpResponseHeaderMessage() {
-        return responseHeader.entrySet().stream()
-            .map(entry -> entry.getKey() + ": " + entry.getValue())
+        return responseHeader.stream()
+            .map(header -> header.getName() + ": " + header.getValue())
             .reduce((s1, s2) -> s1 + CLRF + s2)
             .orElse("");
     }
 
-    public Map<String, String> getResponseHeader() {
-        return Collections.unmodifiableMap(responseHeader);
+    public List<HttpResponseHeaderField> getResponseHeader() {
+        return Collections.unmodifiableList(responseHeader);
+    }
+
+    public String getHeaderValue(String name) {
+        return responseHeader.stream()
+            .filter(header -> header.getName().equals(name))
+            .map(HttpResponseHeaderField::getValue)
+            .findFirst()
+            .orElse("");
     }
 }
