@@ -1,4 +1,4 @@
-package webserver.managers;
+package webserver.handler;
 
 import java.io.File;
 import java.util.regex.Matcher;
@@ -15,7 +15,7 @@ import webserver.response.HttpVersion;
 import webserver.session.SessionStore;
 import webserver.utils.HttpMessageUtils;
 
-public class IndexManager {
+public class IndexHandler {
 
     private static final String sourceRelativePath = "src/main/resources/static";
 

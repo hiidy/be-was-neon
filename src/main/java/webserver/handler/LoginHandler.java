@@ -1,4 +1,4 @@
-package webserver.managers;
+package webserver.handler;
 
 import db.Database;
 import java.io.File;
@@ -21,9 +21,9 @@ import webserver.session.Session;
 import webserver.session.SessionStore;
 import webserver.utils.HttpMessageUtils;
 
-public class LoginManager {
+public class LoginHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoginManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoginHandler.class);
     private static final String sourceRelativePath = "src/main/resources/static";
     private static final String REGISTER_PATH = "/registration/index.html";
     private static final String LOGIN_PATH = "/login/index.html";

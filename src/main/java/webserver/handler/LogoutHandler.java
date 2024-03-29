@@ -1,4 +1,4 @@
-package webserver.managers;
+package webserver.handler;
 
 import java.io.File;
 import webserver.request.HttpRequest;
@@ -11,7 +11,7 @@ import webserver.response.HttpVersion;
 import webserver.session.SessionStore;
 import webserver.utils.HttpMessageUtils;
 
-public class LogoutManager {
+public class LogoutHandler {
 
     private static final String MAIN_INDEX_PATH = "/index.html";
     private static final String sourceRelativePath = "src/main/resources/static";

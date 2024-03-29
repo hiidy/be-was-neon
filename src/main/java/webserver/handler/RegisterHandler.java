@@ -1,4 +1,4 @@
-package webserver.managers;
+package webserver.handler;
 
 import db.Database;
 import java.io.File;
@@ -16,9 +16,9 @@ import webserver.response.HttpStatus;
 import webserver.response.HttpVersion;
 import webserver.utils.HttpMessageUtils;
 
-public class RegisterManager {
+public class RegisterHandler {
 
-    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(RegisterManager.class);
+    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(RegisterHandler.class);
 
     private static final String sourceRelativePath = "src/main/resources/static";
     private static final String REDIRECT_PATH = "/index.html";

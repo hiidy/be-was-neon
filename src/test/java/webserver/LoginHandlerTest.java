@@ -9,11 +9,11 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import webserver.managers.LoginManager;
+import webserver.handler.LoginHandler;
 import webserver.request.HttpRequest;
 import webserver.response.HttpResponse;
 
-class LoginManagerTest {
+class LoginHandlerTest {
 
     private Database db;
     private HttpRequest wrongIdRequest;
@@ -58,11 +58,11 @@ class LoginManagerTest {
     @Test
     @DisplayName("없는 userId로 로그인 했을 때 회원가입 페이지로 redirect 되는지 테스트")
     void testNoneExistingUserId() {
-        LoginManager loginManager = new LoginManager();
+        LoginHandler loginHandler = new LoginHandler();
         String userId = "user4";
 
-        loginManager.loginResponse(wrongIdRequest);
-        HttpResponse response = loginManager.loginResponse(wrongIdRequest);
+        loginHandler.loginResponse(wrongIdRequest);
+        HttpResponse response = loginHandler.loginResponse(wrongIdRequest);
         Assertions.assertThat(response.getHttpResponseHeader().getHeaderValue("Location"))
             .isEqualTo("/registration/index.html");
     }
@@ -70,12 +70,12 @@ class LoginManagerTest {
     @Test
     @DisplayName("잘못된 비밀번호로 로그인 했을 때 로그인 페이지로 redirect 되는지 테스트")
     void testWrongPassword() {
-        LoginManager loginManager = new LoginManager();
+        LoginHandler loginHandler = new LoginHandler();
         String userId = "user1";
         String password = "2345";
 
-        loginManager.loginResponse(wrongPasswordRequest);
-        HttpResponse response = loginManager.loginResponse(wrongPasswordRequest);
+        loginHandler.loginResponse(wrongPasswordRequest);
+        HttpResponse response = loginHandler.loginResponse(wrongPasswordRequest);
         Assertions.assertThat(response.getHttpResponseHeader().getHeaderValue("Location"))
             .isEqualTo("/login/index.html");
     }

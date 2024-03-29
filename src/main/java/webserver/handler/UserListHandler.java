@@ -1,4 +1,4 @@
-package webserver.managers;
+package webserver.handler;
 
 import db.Database;
 import java.io.File;
@@ -18,9 +18,9 @@ import webserver.response.HttpVersion;
 import webserver.session.SessionStore;
 import webserver.utils.HttpMessageUtils;
 
-public class UserListManager {
+public class UserListHandler {
 
-    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(UserListManager.class);
+    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(UserListHandler.class);
 
     private static final String sourceRelativePath = "src/main/resources/static";
     private static final String USER_TABLE_HTML = "<tr><td>%d</td><td>%s</td><td>%s</td><tr/>";
