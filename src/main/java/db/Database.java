@@ -1,6 +1,6 @@
 package db;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import model.User;
@@ -17,7 +17,7 @@ public class Database {
         return users.get(userId);
     }
 
-    public static Collection<User> findAll() {
-        return users.values();
+    public static List<User> findAll() {
+        return List.copyOf(users.values());
     }
 }

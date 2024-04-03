@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import webserver.session.Cookie;
+import webserver.Cookie;
 
 class HttpResponseHeaderTest {
 
@@ -24,8 +24,7 @@ class HttpResponseHeaderTest {
     @Test
     @DisplayName("Response의 Header에 Set Cookie가 옳바르게 추가되는지 테스트")
     void testSetCookie() {
-        Cookie cookie = new Cookie();
-        cookie.setSessionID("1234").setPath("/");
+        Cookie cookie = new Cookie("sid", "1234").setPath("/");
         HttpResponseHeader httpResponseHeader = new HttpResponseHeader();
         httpResponseHeader.setCookie(cookie);
 

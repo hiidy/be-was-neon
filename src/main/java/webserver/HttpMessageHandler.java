@@ -9,6 +9,11 @@ import java.io.OutputStream;
 import java.net.Socket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import webserver.handler.IndexHandler;
+import webserver.handler.LoginHandler;
+import webserver.handler.LogoutHandler;
+import webserver.handler.RegisterHandler;
+import webserver.handler.UserListHandler;
 import webserver.request.HttpRequest;
 import webserver.response.HttpResponse;
 
@@ -44,13 +49,15 @@ public class HttpMessageHandler implements Runnable {
 
     private HttpResponse selectManager(HttpRequest httpRequest) {
         if (httpRequest.getHttpRequestStartLine().getRequestURI().startsWith("/create")) {
-            return new RegisterManager().registerResponse(httpRequest);
+            return new RegisterHandler().registerResponse(httpRequest);
         } else if (httpRequest.getHttpRequestStartLine().getRequestURI().startsWith("/join")) {
-            return new LoginManager().loginResponse(httpRequest);
+            return new LoginHandler().loginResponse(httpRequest);
         } else if (httpRequest.getHttpRequestStartLine().getRequestURI().startsWith("/logout")) {
-            return new LogoutManager().logoutResponse(httpRequest);
+            return new LogoutHandler().logoutResponse(httpRequest);
+        } else if (httpRequest.getHttpRequestStartLine().getRequestURI().startsWith("/user/list")) {
+            return new UserListHandler().userListResponse(httpRequest);
         }
-        return new IndexManager().indexResponse(httpRequest);
+        return new IndexHandler().indexResponse(httpRequest);
     }
 
 }
